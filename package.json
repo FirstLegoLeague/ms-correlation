@@ -1,5 +1,5 @@
 {
-  "name": "@first-lego-league/ms-domain",
+  "name": "@first-lego-league/ms-correlation",
   "version": "0.0.1",
   "description": "A library to help support MS with domains",
   "main": "index.js",
