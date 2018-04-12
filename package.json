@@ -1,0 +1,23 @@
+{
+  "name": "@first-lego-league/ms-domain",
+  "version": "0.0.1",
+  "description": "A library to help support MS with domains",
+  "main": "index.js",
+  "repository": "git@github.com:FirstLegoLeagueIL/ms-domain.git",
+  "author": "Roy Shmeuli <roysh9@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "lint": "eslint lib/**/*.js",
+    "lint:fix": "yarn run lint -- --fix",
+    "eslint": "eslint"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}
