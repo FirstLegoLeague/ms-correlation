@@ -1,6 +1,6 @@
 {
   "name": "@first-lego-league/ms-correlation",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A library to help support MS with domains",
   "main": "index.js",
   "repository": "git@github.com:FirstLegoLeagueIL/ms-correlation.git",
