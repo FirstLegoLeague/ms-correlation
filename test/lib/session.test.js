@@ -6,22 +6,20 @@ const Domain = require('domain') // eslint-disable-line node/no-deprecated-api
 chai.use(spies)
 const expect = chai.expect
 
-const AUTH_DATA = {}
-const CORRELATION_ID = 'abc123456'
-
-const jwt = {
-  verify: () => AUTH_DATA
-}
-const correlationId = {
-  generateCorrelationId: () => CORRELATION_ID
-}
-
-jwt.verify = chai.spy(jwt.verify)
-correlationId.generateCorrelationId = chai.spy(correlationId.generateCorrelationId)
+let jwtVerifySpy
+let generateIdSpy
 
 const session = proxyquire('../../lib/session', {
-  jsonwebtoken: jwt,
-  './correlation-id': correlationId
+  jsonwebtoken: {
+    verify () {
+      return jwtVerifySpy.apply(this, arguments)
+    }
+  },
+  './correlation-id': {
+    generateCorrelationId () {
+      return generateIdSpy.apply(this, arguments)
+    }
+  }
 })
 
 const sessionSymbol = Symbol.for('session')
@@ -39,10 +37,19 @@ describe('session', () => {
   })
 
   describe('authentication', () => {
-    const authToken = 'AUTHENTICATION'
+    let authData
+
+    beforeEach(() => {
+      authData = {}
+      jwtVerifySpy = chai.spy(() => authData)
+    })
+
+    afterEach(() => {
+      jwtVerifySpy = null
+    })
 
     it('fails when session haven\'t correlated', () => {
-      expect(() => session.authenticate(authToken))
+      expect(() => session.authenticate('auth-token'))
         .to.throw('Session is not correlated yet')
     })
 
@@ -50,26 +57,37 @@ describe('session', () => {
       domain[sessionSymbol] = {}
       domain[sessionSymbol].authData = {}
 
-      expect(() => session.authenticate(authToken))
+      expect(() => session.authenticate('auth-token'))
         .to.throw('Authentication already happened in this session')
     })
 
     it('verify the given token', () => {
       domain[sessionSymbol] = {}
-      session.authenticate(authToken)
+      session.authenticate('auth-token')
 
-      expect(jwt.verify).to.be.called.with(authToken)
+      expect(jwtVerifySpy).to.be.called.with('auth-token')
     })
 
     it('saves the authentication data on domain', () => {
       domain[sessionSymbol] = {}
-      session.authenticate(authToken)
+      session.authenticate('auth-token')
 
-      expect(domain[sessionSymbol].authData).to.be.equals(AUTH_DATA)
+      expect(domain[sessionSymbol].authData).to.be.equals(authData)
     })
   })
 
   describe('correlation', () => {
+    let correlationId
+
+    beforeEach(() => {
+      generateIdSpy = chai.spy(() => correlationId)
+    })
+
+    afterEach(() => {
+      correlationId = null
+      generateIdSpy = null
+    })
+
     it('fails when session already correlated', () => {
       domain[sessionSymbol] = {}
 
@@ -78,24 +96,16 @@ describe('session', () => {
     })
 
     it('saves the generated a correlation id on domain', () => {
+      correlationId = 'cor-id'
       session.correlateSession()
 
-      expect(domain[sessionSymbol].correlationId).to.be.equal(CORRELATION_ID)
+      expect(domain[sessionSymbol].correlationId).to.be.equal('cor-id')
     })
 
     it('saves the given correlation id on domain', () => {
       session.correlateSession('given-id')
 
       expect(domain[sessionSymbol].correlationId).to.be.equal('given-id')
-    })
-
-    it('authenticates when given auth-token', () => {
-      const originalAuthenticate = session.authenticate
-      session.authenticate = chai.spy(() => {})
-      session.correlateSession('given-id', 'auth-token')
-
-      expect(session.authenticate).to.be.called.with('auth-token')
-      session.authenticate = originalAuthenticate
     })
 
     it('authenticates when given auth-token', () => {
