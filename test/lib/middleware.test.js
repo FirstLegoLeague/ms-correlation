@@ -8,62 +8,92 @@ const expect = chai.expect
 const CORRELATION_ID = 'correlation'
 const AUTH_TOKEN = 'authentication'
 
-const mockDomain = {
-  add: () => { },
-  run: callback => { mockDomain.runCallback = callback }
-}
-const session = { correlateSession: () => { } }
-const domain = { create: () => mockDomain }
-const cookie = { parse: () => ({ 'auth-token': AUTH_TOKEN }) }
-let next = () => { }
-const req = {
+let createDomianSpy
+let correlateSessionSpy
+let nextSpy
+let mockDomain
+let runCallback
+
+const mockReq = {
   headers: {
     'correlation-id': CORRELATION_ID,
     'auth-token': AUTH_TOKEN,
     cookie: ''
   }
 }
-const res = { }
-
-session.correlateSession = chai.spy(session.correlateSession)
-domain.create = chai.spy(domain.create)
-mockDomain.add = chai.spy(mockDomain.add)
-next = chai.spy(next)
+const mockRes = { }
 
 const { correlationMiddleware } = proxyquire('../../lib/middleware', {
-  domain,
-  cookie,
-  './session': session
+  domain: {
+    create () {
+      return createDomianSpy.apply(this, arguments)
+    }
+  },
+  cookie: {
+    parse () {
+      return { 'auth-token': AUTH_TOKEN }
+    }
+  },
+  './session': {
+    correlateSession () {
+      return correlateSessionSpy.apply(this, arguments)
+    }
+  }
 })
 
-describe('correlationMiddleware', () => {
+describe('Correlation middleware', () => {
+  beforeEach(() => {
+    mockDomain = {
+      add: chai.spy(() => { }),
+      run: chai.spy(callback => { runCallback = callback })
+    }
+    createDomianSpy = chai.spy(() => mockDomain)
+    correlateSessionSpy = chai.spy(() => { })
+    nextSpy = chai.spy(() => { })
+  })
+
+  afterEach(() => {
+    mockDomain = null
+    createDomianSpy = null
+    correlateSessionSpy = null
+    nextSpy = null
+  })
+
   it('creates a domain', () => {
-    correlationMiddleware(req, res, next)
-    expect(domain.create).to.have.been.called()
+    correlationMiddleware(mockReq, mockRes, nextSpy)
+    expect(createDomianSpy).to.have.been.called()
   })
 
-  it('adds the request to the domain', () => {
-    correlationMiddleware(req, res, next)
-    expect(mockDomain.add).to.have.been.called.with(req)
+  it('adds the mockRequest to the domain', () => {
+    correlationMiddleware(mockReq, mockRes, nextSpy)
+    expect(mockDomain.add).to.have.been.called.with(mockReq)
   })
 
-  it('adds the response to the domain', () => {
-    correlationMiddleware(req, res, next)
-    expect(mockDomain.add).to.have.been.called.with(res)
+  it('adds the mockResponse to the domain', () => {
+    correlationMiddleware(mockReq, mockRes, nextSpy)
+    expect(mockDomain.add).to.have.been.called.with(mockRes)
   })
 
-  it('calls domain.run and runs correlateSession and next in it', () => {
-    correlationMiddleware(req, res, next)
-    mockDomain.runCallback()
-    expect(session.correlateSession).to.have.been.called.with(CORRELATION_ID, AUTH_TOKEN)
-    expect(next).to.have.been.called()
+  it('calls domain.run', () => {
+    correlationMiddleware(mockReq, mockRes, nextSpy)
+    expect(mockDomain.run).to.have.been.called()
   })
 
-  it('extracts the correct authentication from cookies', () => {
-    req.headers['auth-token'] = undefined
-    correlationMiddleware(req, res, next)
-    mockDomain.runCallback()
-    expect(session.correlateSession).to.have.been.called.with(CORRELATION_ID, AUTH_TOKEN)
-    expect(next).to.have.been.called()
+  it('correlates the session in the domain.run callback', () => {
+    correlationMiddleware(mockReq, mockRes, nextSpy)
+    runCallback()
+    expect(correlateSessionSpy).to.have.been.called()
+  })
+
+  it('calls `next` in the domain.run callback', () => {
+    correlationMiddleware(mockReq, mockRes, nextSpy)
+    runCallback()
+    expect(nextSpy).to.have.been.called()
+  })
+
+  it('extracts the correct authentication from cookies if it does not exist in headers', () => {
+    mockReq.headers['auth-token'] = undefined
+    correlationMiddleware(mockReq, mockRes, nextSpy)
+    expect(mockDomain.run).to.have.been.called()
   })
 })

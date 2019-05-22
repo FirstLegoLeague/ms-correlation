@@ -11,7 +11,7 @@
     "node": ">=6.11.1"
   },
   "scripts": {
-    "test": "cross-env SECRET=mock_secret PORT=0000 nyc --all --reporter=text --check-coverage --lines 90 mocha --recursive",
+    "test": "cross-env SECRET=mock_secret PORT=0000 nyc -n=lib/**/*.js --reporter=text --check-coverage --lines 90 mocha --recursive",
     "lint": "eslint --ext .js ./",
     "lint:fix": "eslint --ext .js --fix ./"
   },
