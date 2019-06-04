@@ -5,10 +5,17 @@
   "main": "index.js",
   "repository": "git@github.com:FirstLegoLeagueIL/ms-correlation.git",
   "author": "Roy Shmeuli <roysh9@gmail.com>",
-  "license": "MIT",
-  "private": false,
+  "license": "GPL-3.0",
+  "files": [
+    "index.js",
+    "lib/**/*.js",
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "yarn.lock"
+  ],
   "engines": {
-    "node": ">=6.11.1"
+    "node": ">=6.0.0"
   },
   "scripts": {
     "test": "cross-env SECRET=mock_secret PORT=0000 nyc -n=lib/**/*.js --reporter=text --check-coverage --lines 90 mocha --recursive",
