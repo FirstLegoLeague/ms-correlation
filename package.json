@@ -1,26 +1,27 @@
 {
   "name": "@first-lego-league/ms-correlation",
-  "version": "0.0.5",
   "description": "A library to help support MS with domains",
+  "version": "0.0.5",
   "main": "index.js",
-  "repository": "git@github.com:FirstLegoLeagueIL/ms-correlation.git",
+  "repository": "https://github.com/FirstLegoLeagueIL/ms-correlation.git",
   "author": "Roy Shmeuli <roysh9@gmail.com>",
   "license": "GPL-3.0",
   "files": [
     "index.js",
-    "lib/**/*.js",
-    "LICENSE",
-    "README.md",
-    "package.json",
-    "yarn.lock"
+    "lib/**/*.js"
   ],
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "scripts": {
     "test": "cross-env SECRET=mock_secret PORT=0000 nyc -n=lib/**/*.js --reporter=text --check-coverage --lines 90 mocha --recursive",
     "lint": "eslint --ext .js ./",
     "lint:fix": "eslint --ext .js --fix ./"
+  },
+  "dependencies": {
+    "cookie": "^0.3.1",
+    "jsonwebtoken": "^8.2.1",
+    "randomatic": "^3.0.0"
   },
   "devDependencies": {
     "@first-lego-league/eslint-config": "^1.0.0",
@@ -38,10 +39,5 @@
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "proxyquire": "^2.1.0"
-  },
-  "dependencies": {
-    "cookie": "^0.3.1",
-    "jsonwebtoken": "^8.2.1",
-    "randomatic": "^3.0.0"
   }
 }
