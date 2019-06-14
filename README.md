@@ -1,3 +1,9 @@
+[![npm](https://img.shields.io/npm/v/@first-lego-league/ms-correlation.svg)](https://www.npmjs.com/package/@first-lego-league/ms-correlation)
+[![David Dependency Status](https://david-dm.org/FirstLegoLeague/ms-correlation.svg)](https://david-dm.org/FirstLegoLeague/ms-correlation)
+[![David Dev Dependency Status](https://david-dm.org/FirstLegoLeague/ms-correlation/dev-status.svg)](https://david-dm.org/FirstLegoLeague/ms-correlation#info=devDependencies)
+[![Build status](https://ci.appveyor.com/api/projects/status/65scfycp2uyg83ri/branch/master?svg=true)](https://ci.appveyor.com/project/2roy999/ms-correlation/branch/master)
+[![GitHub](https://img.shields.io/github/license/FirstLegoLeague/ms-correlation.svg)](https://github.com/FirstLegoLeague/ms-correlation/blob/master/LICENSE)
+
 # ms-correlation
 A library with function for supporting MS (Module Standard) correlation
 section
@@ -27,6 +33,7 @@ someEventEmitter.on('someEvent', event => {
 
     handleEvent(event)
   })
+})
 ```
 
 Be aware that both argument of this function are optionals.
