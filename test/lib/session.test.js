@@ -6,13 +6,13 @@ const Domain = require('domain') // eslint-disable-line node/no-deprecated-api
 chai.use(spies)
 const expect = chai.expect
 
-let jwtVerifySpy
+let jwtDecodeSpy
 let generateIdSpy
 
 const session = proxyquire('../../lib/session', {
   jsonwebtoken: {
-    verify () {
-      return jwtVerifySpy.apply(this, arguments)
+    decode () {
+      return jwtDecodeSpy.apply(this, arguments)
     }
   },
   './correlation-id': {
@@ -41,11 +41,11 @@ describe('session', () => {
 
     beforeEach(() => {
       authData = {}
-      jwtVerifySpy = chai.spy(() => authData)
+      jwtDecodeSpy = chai.spy(() => authData)
     })
 
     afterEach(() => {
-      jwtVerifySpy = null
+      jwtDecodeSpy = null
     })
 
     it('fails when session haven\'t correlated', () => {
@@ -61,11 +61,11 @@ describe('session', () => {
         .to.throw('Authentication already happened in this session')
     })
 
-    it('verify the given token', () => {
+    it('decode the given token', () => {
       domain[sessionSymbol] = {}
       session.authenticate('auth-token')
 
-      expect(jwtVerifySpy).to.be.called.with('auth-token')
+      expect(jwtDecodeSpy).to.be.called.with('auth-token')
     })
 
     it('saves the authentication data on domain', () => {
