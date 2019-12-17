@@ -1,9 +1,11 @@
 [![npm](https://img.shields.io/npm/v/@first-lego-league/ms-correlation.svg)](https://www.npmjs.com/package/@first-lego-league/ms-correlation)
+[![codecov](https://codecov.io/gh/FirstLegoLeague/ms-correlation/branch/master/graph/badge.svg)](https://codecov.io/gh/FirstLegoLeague/ms-correlation)
+[![Build status](https://ci.appveyor.com/api/projects/status/65scfycp2uyg83ri/branch/master?svg=true)](https://ci.appveyor.com/project/2roy999/ms-correlation/branch/master)
+[![GitHub](https://img.shields.io/github/license/FirstLegoLeague/ms-correlation.svg)](https://github.com/FirstLegoLeague/ms-correlation/blob/master/LICENSE)
+
 [![David Dependency Status](https://david-dm.org/FirstLegoLeague/ms-correlation.svg)](https://david-dm.org/FirstLegoLeague/ms-correlation)
 [![David Dev Dependency Status](https://david-dm.org/FirstLegoLeague/ms-correlation/dev-status.svg)](https://david-dm.org/FirstLegoLeague/ms-correlation#info=devDependencies)
 [![David Peer Dependencies Status](https://david-dm.org/FirstLegoLeague/ms-correlation/peer-status.svg)](https://david-dm.org/FirstLegoLeague/ms-correlation?type=peer)
-[![Build status](https://ci.appveyor.com/api/projects/status/65scfycp2uyg83ri/branch/master?svg=true)](https://ci.appveyor.com/project/2roy999/ms-correlation/branch/master)
-[![GitHub](https://img.shields.io/github/license/FirstLegoLeague/ms-correlation.svg)](https://github.com/FirstLegoLeague/ms-correlation/blob/master/LICENSE)
 
 # FIRST LEGO Legaue Correlation
 A library for supporting _FIRST_ LEGO League TMS [Module Standard correlation section](https://github.com/FirstLegoLeague/architecture/blob/master/module-standard/v1.0-SNAPSHOT.md#cross-module-correlations).
