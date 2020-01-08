@@ -8,7 +8,10 @@
 [![David Peer Dependencies Status](https://david-dm.org/FirstLegoLeague/ms-correlation/peer-status.svg)](https://david-dm.org/FirstLegoLeague/ms-correlation?type=peer)
 
 # FIRST LEGO Legaue Correlation
-A library for supporting _FIRST_ LEGO League TMS [Module Standard correlation section](https://github.com/FirstLegoLeague/architecture/blob/master/module-standard/v1.0-SNAPSHOT.md#cross-module-correlations).
+A package for server correlation, working according to the _FIRST_ LEGO League TMS [Module Standard correlation section](https://github.com/FirstLegoLeague/architecture/blob/master/module-standard/v1.0-SNAPSHOT.md#cross-module-correlations).
+
+## Logic
+The package saves the correlation-id and authentication data using the `domain` feature of node.
 
 ## Usage
 There are two options to use this library: with middleware or with domain.

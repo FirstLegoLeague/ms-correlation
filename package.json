@@ -3,7 +3,7 @@
   "description": "A library to help support MS with domains",
   "version": "1.0.3",
   "main": "index.js",
-  "repository": "https://github.com/FirstLegoLeagueIL/ms-correlation.git",
+  "repository": "https://github.com/FirstLegoLeague/ms-correlation.git",
   "author": "Roy Shmeuli <roysh9@gmail.com>",
   "license": "GPL-3.0",
   "files": [
@@ -11,7 +11,7 @@
     "lib/**/*.js"
   ],
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=8.x"
   },
   "scripts": {
     "test": "cross-env SECRET=mock_secret PORT=0000 mocha --recursive",
